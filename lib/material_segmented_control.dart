@@ -52,6 +52,7 @@ class MaterialSegmentedControl<T> extends StatefulWidget {
     this.disabledColor = _kDisabledDefaultColor,
     this.unselectedColor = _kUnselectedDefaultColor,
     this.horizontalPadding = _horizontalPadding,
+    this.colorFadeDuration = _colorFadeDuration,
   })  : assert(children.length >= 1),
         assert(
           selectionIndex == null ||
@@ -118,6 +119,11 @@ class MaterialSegmentedControl<T> extends StatefulWidget {
   /// Giving an empty list or null enables all children.
   final List<T>? disabledChildren;
 
+  /// Time to fade selections
+  ///
+  /// Defaults to 222 milliseconds if null
+  final Duration? colorFadeDuration;
+
   @override
   _SegmentedControlState<T> createState() => _SegmentedControlState<T>();
 }
@@ -143,7 +149,7 @@ class _SegmentedControlState<T> extends State<MaterialSegmentedControl<T>>
 
   AnimationController createAnimationController() {
     return AnimationController(
-      duration: _colorFadeDuration,
+      duration: widget.colorFadeDuration,
       vsync: this,
     )..addListener(() {
         setState(() {
@@ -463,7 +469,7 @@ class _RenderSegmentedControl<T> extends RenderBox
     required List<Color?> backgroundColors,
     required Color? borderColor,
     required double borderRadius,
-  })   : _textDirection = textDirection,
+  })  : _textDirection = textDirection,
         _selectedIndex = selectedIndex,
         _pressedIndex = pressedIndex,
         _backgroundColors = backgroundColors,
